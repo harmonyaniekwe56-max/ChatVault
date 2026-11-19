@@ -1,0 +1,77 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#17152b">
+  <title>ChatVault — Connect. Create. Keep.</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <header class="navbar">
+    <a href="#" class="logo">Chat<span>Vault</span></a>
+    <button id="themeToggle" class="theme-toggle">☀️</button>
+  </header>
+
+  <main class="container">
+    <section class="welcome">
+      <div class="welcome-icon">✦</div>
+      <h1>Your world.<br><span>Your people.</span></h1>
+      <p>Connect, share and keep the moments that matter.</p>
+
+      <div class="features">
+        <span>✦ Private chats</span>
+        <span>✦ Shared memories</span>
+        <span>✦ Real connections</span>
+      </div>
+    </section>
+
+    <section class="auth-card">
+      <div class="auth-tabs">
+        <button class="tab active" id="signupTab">Create account</button>
+        <button class="tab" id="loginTab">Log in</button>
+      </div>
+
+      <form id="signupForm">
+        <h2>Join ChatVault</h2>
+        <p>Create your account and meet your people.</p>
+
+        <label for="username">Username</label>
+        <input id="username" type="text" placeholder="Choose a username" required>
+
+        <label for="email">Email address</label>
+        <input id="email" type="email" placeholder="Enter your email" required>
+
+        <label for="password">Password</label>
+        <input id="password" type="password" placeholder="Create a password" required minlength="8">
+
+        <button type="submit" class="primary-btn">Create account</button>
+      </form>
+
+      <form id="loginForm" hidden>
+        <h2>Welcome back</h2>
+        <p>It's good to have you here again.</p>
+
+        <label for="loginEmail">Email address</label>
+        <input id="loginEmail" type="email" placeholder="Enter your email" required>
+
+        <label for="loginPassword">Password</label>
+        <input id="loginPassword" type="password" placeholder="Enter your password" required>
+
+        <button type="submit" class="primary-btn">Log in</button>
+      </form>
+
+      <p id="message" role="status"></p>
+      <p class="terms">By joining, you agree to use ChatVault responsibly.</p>
+    </section>
+  </main>
+
+  <footer>
+    <p>© 2026 ChatVault. Connect. Create. Keep.</p>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
