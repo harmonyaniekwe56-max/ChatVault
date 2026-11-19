@@ -1,4 +1,4 @@
-const SUPABASE_URL = "https://harmonyaniekwe56-max.github.io/ChatVault/";
+const SUPABASE_URL = "const SUPABASE_URL = "https://your-project-id.supabase.co";";
 const SUPABASE_KEY = "sb_publishable_FXv-e1b3nPaAXjJqGQeRoQ_eaqyK9vf";
 
 const supabaseClient = window.supabase.createClient(
