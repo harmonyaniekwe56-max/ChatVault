@@ -53,18 +53,52 @@ loginTab.addEventListener("click", () => {
 
   message.textContent = "";
 });
-
-// Temporary form handling
-signupForm.addEventListener("submit", (event) => {
+// Real account registration
+signupForm.addEventListener("submit", async (event) => {
   event.preventDefault();
 
-  message.textContent =
-    "Your registration form is ready! Account creation will be connected next.";
+  const username = document.getElementById("username").value.trim();
+  const email = document.getElementById("email").value.trim();
+  const password = document.getElementById("password").value;
+
+  message.textContent = "Creating your account...";
+
+  const { data, error } = await supabaseClient.auth.signUp({
+    email,
+    password,
+    options: {
+      data: { username }
+    }
+  });
+
+  if (error) {
+    message.textContent = error.message;
+    return;
+  }
+
+  message.textContent = data.session
+    ? "Account created successfully! Welcome to ChatVault."
+    : "Account created! Check your email to confirm your account.";
 });
 
-loginForm.addEventListener("submit", (event) => {
+// Real login
+loginForm.addEventListener("submit", async (event) => {
   event.preventDefault();
 
-  message.textContent =
-    "Your login form is ready! Login will be connected next.";
+  const email = document.getElementById("loginEmail").value.trim();
+  const password = document.getElementById("loginPassword").value;
+
+  message.textContent = "Logging in...";
+
+  const { data, error } = await supabaseClient.auth.signInWithPassword({
+    email,
+    password
+  });
+
+  if (error) {
+    message.textContent = error.message;
+    return;
+  }
+
+  message.textContent = "Welcome back to ChatVault!";
 });
