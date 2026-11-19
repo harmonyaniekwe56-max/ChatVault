@@ -1,4 +1,10 @@
+const SUPABASE_URL = "https://harmonyaniekwe56-max.github.io/ChatVault/";
+const SUPABASE_KEY = "sb_publishable_FXv-e1b3nPaAXjJqGQeRoQ_eaqyK9vf";
 
+const supabaseClient = window.supabase.createClient(
+  SUPABASE_URL,
+  SUPABASE_KEY
+);
 const themeToggle = document.getElementById("themeToggle");
 const signupTab = document.getElementById("signupTab");
 const loginTab = document.getElementById("loginTab");
