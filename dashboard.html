@@ -1,0 +1,78 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ChatVault — Dashboard</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="dashboard-page">
+
+  <header class="navbar">
+    <a href="dashboard.html" class="logo">Chat<span>Vault</span></a>
+    <button id="dashboardTheme" class="theme-toggle">🌙</button>
+  </header>
+
+  <main class="dashboard-container">
+    <section class="dashboard-welcome">
+      <p>YOUR SPACE. YOUR PEOPLE.</p>
+      <h1>Welcome to <span>ChatVault</span></h1>
+      <p>Your conversations and memories belong here.</p>
+    </section>
+
+    <section class="profile-summary">
+      <div class="profile-avatar" id="profileAvatar">C</div>
+      <div>
+        <h2 id="profileName">Loading profile...</h2>
+        <p id="profileUsername">@username</p>
+      </div>
+      <button id="editProfile">Edit profile</button>
+    </section>
+
+    <section class="dashboard-grid">
+      <a href="messages.html" class="dashboard-card">
+        <span>💬</span>
+        <h3>Messages</h3>
+        <p>Your private conversations.</p>
+      </a>
+
+      <a href="friends.html" class="dashboard-card">
+        <span>👥</span>
+        <h3>Friends</h3>
+        <p>Find and connect with people.</p>
+      </a>
+
+      <a href="stories.html" class="dashboard-card">
+        <span>✨</span>
+        <h3>Stories</h3>
+        <p>Share moments with friends.</p>
+      </a>
+
+      <a href="memories.html" class="dashboard-card">
+        <span>🖼️</span>
+        <h3>Memory Lane</h3>
+        <p>Keep your favourite moments.</p>
+      </a>
+
+      <a href="settings.html" class="dashboard-card">
+        <span>⚙️</span>
+        <h3>Settings</h3>
+        <p>Manage your account and privacy.</p>
+      </a>
+
+      <a href="circles.html" class="dashboard-card">
+        <span>🌙</span>
+        <h3>Secret Circles</h3>
+        <p>Your private communities.</p>
+      </a>
+    </section>
+
+    <button id="logoutButton" class="logout-btn">Log out</button>
+    <p id="dashboardMessage" role="status"></p>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="dashboard.js"></script>
+</body>
+</html>
