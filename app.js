@@ -142,3 +142,85 @@ if (findFriendsButton) {
     document.getElementById("pageTitle").textContent = "Discover";
   });
 }
+// CHATVAULT PEOPLE SEARCH
+
+const peopleSearchInput = document.getElementById("friendSearch");
+const peopleSearchResults = document.getElementById("peopleSearchResults");
+
+if (peopleSearchInput && peopleSearchResults) {
+  let searchNumber = 0;
+
+  peopleSearchInput.addEventListener("input", async () => {
+    const term = peopleSearchInput.value.trim();
+    const currentSearch = ++searchNumber;
+
+    if (term.length < 2) {
+      peopleSearchResults.textContent =
+        "Type at least 2 characters to search.";
+      return;
+    }
+
+    peopleSearchResults.textContent = "Searching...";
+
+    const { data, error } = await supabaseClient.rpc(
+      "search_chatvault_users",
+      { search_term: term }
+    );
+
+    if (currentSearch !== searchNumber) return;
+
+    if (error) {
+      peopleSearchResults.textContent =
+        "Could not search users. Please try again.";
+      console.error(error);
+      return;
+    }
+
+    peopleSearchResults.replaceChildren();
+
+    if (!data || data.length === 0) {
+      peopleSearchResults.textContent = "No users found.";
+      return;
+    }
+
+    data.forEach((person) => {
+      const card = document.createElement("div");
+      card.className = "friend-card";
+
+      const info = document.createElement("div");
+      info.className = "friend-card-info";
+
+      const name = document.createElement("strong");
+      name.textContent = person.display_name || person.username;
+
+      const username = document.createElement("small");
+      username.textContent = "@" + person.username;
+
+      const button = document.createElement("button");
+      button.className = "primary-button";
+      button.textContent = "Add Friend";
+
+      button.addEventListener("click", async () => {
+        button.disabled = true;
+        button.textContent = "Sending...";
+
+        const { error: requestError } =
+          await supabaseClient.rpc("send_friend_request", {
+            target_user_id: person.id
+          });
+
+        if (requestError) {
+          button.disabled = false;
+          button.textContent = "Add Friend";
+          alert(requestError.message);
+          return;
+        }
+
+        button.textContent = "Request Sent";
+      });
+
+      info.append(name, username);
+      card.append(info, button);
+      peopleSearchResults.appendChild(card);
+    });
+  });
