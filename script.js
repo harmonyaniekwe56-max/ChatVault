@@ -80,7 +80,8 @@ signupForm.addEventListener("submit", async (event) => {
     : "Account created! Check your email to confirm your account.";
 });
 
-// Real login
+
+ // Real login
 loginForm.addEventListener("submit", async (event) => {
   event.preventDefault();
 
@@ -100,4 +101,6 @@ loginForm.addEventListener("submit", async (event) => {
   }
 
   message.textContent = "Welcome back to ChatVault!";
+
+  window.location.href = "dashboard.html";
 });
