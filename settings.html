@@ -1,0 +1,60 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ChatVault — Settings</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="navbar">
+    <a href="dashboard.html" class="logo">Chat<span>Vault</span></a>
+    <a href="dashboard.html">Back to dashboard</a>
+  </header>
+
+  <main class="dashboard-container">
+    <h1>Account Settings</h1>
+    <p>Manage your profile and account.</p>
+
+    <section class="profile-summary">
+      <div class="profile-avatar">C</div>
+      <div>
+        <h2>Profile & Personal Details</h2>
+        <p>Update how people see you on ChatVault.</p>
+      </div>
+    </section>
+
+    <form id="profileForm" class="settings-form">
+      <label for="displayName">Display name</label>
+      <input id="displayName" type="text" placeholder="Your display name">
+
+      <label for="username">Username</label>
+      <input id="username" type="text" placeholder="Your username">
+
+      <button type="submit">Save profile</button>
+      <p id="profileMessage" role="status"></p>
+    </form>
+
+    <hr>
+
+    <h2>Change Password</h2>
+    <form id="passwordForm" class="settings-form">
+      <label for="newPassword">New password</label>
+      <input id="newPassword" type="password"
+        minlength="8" placeholder="At least 8 characters" required>
+
+      <button type="submit">Update password</button>
+      <p id="passwordMessage" role="status"></p>
+    </form>
+
+    <hr>
+
+    <h2>Profile Picture</h2>
+    <p>We'll add photo uploads and avatar customization here next.</p>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="settings.js"></script>
+</body>
+</html>
