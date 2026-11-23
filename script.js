@@ -102,5 +102,5 @@ loginForm.addEventListener("submit", async (event) => {
 
   message.textContent = "Welcome back to ChatVault!";
 
-  window.location.href = "dashboard.html";
+window.location.href = "friends.html";
 });
