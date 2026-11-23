@@ -224,3 +224,109 @@ if (peopleSearchInput && peopleSearchResults) {
       peopleSearchResults.appendChild(card);
     });
   });
+// LOAD INCOMING FRIEND REQUESTS
+
+async function loadFriendRequests() {
+  const requestContainer = document.getElementById("friendRequests");
+  const requestCount = document.getElementById("requestCount");
+
+  if (!requestContainer) return;
+
+  const { data: { user } } = await supabaseClient.auth.getUser();
+
+  if (!user) return;
+
+  const { data, error } = await supabaseClient
+    .from("friend_requests")
+    .select("id, sender_id, created_at")
+    .eq("receiver_id", user.id)
+    .eq("status", "pending");
+
+  if (error) {
+    console.error("Friend requests:", error.message);
+    requestContainer.textContent = "Could not load requests.";
+    return;
+  }
+
+  requestCount.textContent = data.length;
+  requestContainer.replaceChildren();
+
+  if (data.length === 0) {
+    requestContainer.textContent = "No new friend requests yet.";
+    return;
+  }
+
+  for (const request of data) {
+    const { data: person } = await supabaseClient
+      .from("profiles")
+      .select("username, display_name")
+      .eq("id", request.sender_id)
+      .single();
+
+    const card = document.createElement("div");
+    card.className = "friend-card";
+
+    const info = document.createElement("div");
+    info.className = "friend-card-info";
+
+    const name = document.createElement("strong");
+    name.textContent = person?.display_name || person?.username || "ChatVault user";
+
+    const username = document.createElement("small");
+    username.textContent = "@" + (person?.username || "user");
+
+    const accept = document.createElement("button");
+    accept.className = "primary-button";
+    accept.textContent = "Accept";
+
+    accept.addEventListener("click", async () => {
+      accept.disabled = true;
+
+      const { error } = await supabaseClient.rpc(
+        "respond_to_friend_request",
+        {
+          request_id: request.id,
+          new_status: "accepted"
+        }
+      );
+
+      if (error) {
+        alert(error.message);
+        accept.disabled = false;
+        return;
+      }
+
+      await loadFriendRequests();
+      await loadFriendsList();
+    });
+
+    const decline = document.createElement("button");
+    decline.textContent = "Decline";
+
+    decline.addEventListener("click", async () => {
+      decline.disabled = true;
+
+      const { error } = await supabaseClient.rpc(
+        "respond_to_friend_request",
+        {
+          request_id: request.id,
+          new_status: "declined"
+        }
+      );
+
+      if (error) {
+        alert(error.message);
+        decline.disabled = false;
+        return;
+      }
+
+      await loadFriendRequests();
+    });
+
+    info.append(name, username);
+    card.append(info, accept, decline);
+    requestContainer.appendChild(card);
+  }
+}
+
+loadFriendRequests();
