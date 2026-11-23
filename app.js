@@ -224,26 +224,18 @@ if (peopleSearchInput && peopleSearchResults) {
       peopleSearchResults.appendChild(card);
     });
   });
-// LOAD INCOMING FRIEND REQUESTS
-
 async function loadFriendRequests() {
   const requestContainer = document.getElementById("friendRequests");
   const requestCount = document.getElementById("requestCount");
 
   if (!requestContainer) return;
 
-  const { data: { user } } = await supabaseClient.auth.getUser();
-
-  if (!user) return;
-
-  const { data, error } = await supabaseClient
-    .from("friend_requests")
-    .select("id, sender_id, created_at")
-    .eq("receiver_id", user.id)
-    .eq("status", "pending");
+  const { data, error } = await supabaseClient.rpc(
+    "get_incoming_friend_requests"
+  );
 
   if (error) {
-    console.error("Friend requests:", error.message);
+    console.error(error.message);
     requestContainer.textContent = "Could not load requests.";
     return;
   }
@@ -256,13 +248,7 @@ async function loadFriendRequests() {
     return;
   }
 
-  for (const request of data) {
-    const { data: person } = await supabaseClient
-      .from("profiles")
-      .select("username, display_name")
-      .eq("id", request.sender_id)
-      .single();
-
+  data.forEach((request) => {
     const card = document.createElement("div");
     card.className = "friend-card";
 
@@ -270,10 +256,10 @@ async function loadFriendRequests() {
     info.className = "friend-card-info";
 
     const name = document.createElement("strong");
-    name.textContent = person?.display_name || person?.username || "ChatVault user";
+    name.textContent = request.display_name || request.username;
 
     const username = document.createElement("small");
-    username.textContent = "@" + (person?.username || "user");
+    username.textContent = "@" + request.username;
 
     const accept = document.createElement("button");
     accept.className = "primary-button";
@@ -285,7 +271,7 @@ async function loadFriendRequests() {
       const { error } = await supabaseClient.rpc(
         "respond_to_friend_request",
         {
-          request_id: request.id,
+          request_id: request.request_id,
           new_status: "accepted"
         }
       );
@@ -309,7 +295,7 @@ async function loadFriendRequests() {
       const { error } = await supabaseClient.rpc(
         "respond_to_friend_request",
         {
-          request_id: request.id,
+          request_id: request.request_id,
           new_status: "declined"
         }
       );
@@ -326,7 +312,7 @@ async function loadFriendRequests() {
     info.append(name, username);
     card.append(info, accept, decline);
     requestContainer.appendChild(card);
-  }
+  });
 }
 
 loadFriendRequests();
