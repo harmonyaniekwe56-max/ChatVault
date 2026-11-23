@@ -1,0 +1,121 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ChatVault — Friends</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="app.css">
+</head>
+<body class="app-page">
+
+  <div class="app-layout">
+
+    <aside class="sidebar">
+      <a href="friends.html" class="logo">
+        Chat<span>Vault</span>
+      </a>
+
+      <p class="sidebar-label">YOUR SPACE</p>
+
+      <nav class="sidebar-nav">
+        <button class="nav-item active" data-tab="friends">👥 Friends</button>
+        <button class="nav-item" data-tab="messages">💬 Messages</button>
+        <button class="nav-item" data-tab="stories">✨ Stories</button>
+        <button class="nav-item" data-tab="discover">🌍 Discover</button>
+
+        <p class="sidebar-label">YOUR EXPERIENCES</p>
+
+        <button class="nav-item" data-tab="memories">🖼️ Memory Lane</button>
+        <button class="nav-item" data-tab="capsules">⏳ Time Capsules</button>
+        <button class="nav-item" data-tab="canvas">🎨 Shared Canvas</button>
+        <button class="nav-item" data-tab="circles">🌙 Secret Circles</button>
+
+        <p class="sidebar-label">PERSONAL</p>
+
+        <button class="nav-item" data-tab="mood">💜 Mood Messages</button>
+        <button class="nav-item" data-tab="settings">⚙️ Settings</button>
+      </nav>
+
+      <div class="sidebar-bottom">
+        <div class="sidebar-profile">
+          <div class="profile-avatar" id="sidebarAvatar">C</div>
+          <div>
+            <strong id="sidebarName">Loading...</strong>
+            <small id="sidebarUsername">@username</small>
+          </div>
+        </div>
+        <button id="logoutButton" class="logout-btn">Log out</button>
+      </div>
+    </aside>
+
+    <main class="main-content">
+
+      <header class="topbar">
+        <h2 id="pageTitle">Friends</h2>
+        <button id="appThemeToggle" class="theme-toggle">🌙</button>
+      </header>
+
+      <section class="app-section active" id="friends">
+        <h1>Your People</h1>
+        <p>Your friendships start here.</p>
+        <div class="empty-state">
+          <span>👥</span>
+          <h3>Your friends will appear here</h3>
+          <p>Connect with people and build your ChatVault community.</p>
+        </div>
+      </section>
+
+      <section class="app-section" id="messages">
+        <h1>Messages</h1>
+        <p>Your private conversations.</p>
+      </section>
+
+      <section class="app-section" id="stories">
+        <h1>Stories</h1>
+        <p>See moments shared by your friends.</p>
+      </section>
+
+      <section class="app-section" id="discover">
+        <h1>Discover</h1>
+        <p>Explore public posts and creativity from ChatVault users.</p>
+      </section>
+
+      <section class="app-section" id="memories">
+        <h1>Memory Lane</h1>
+        <p>Revisit the moments you share with friends.</p>
+      </section>
+
+      <section class="app-section" id="capsules">
+        <h1>Time Capsules</h1>
+        <p>Save messages for the future.</p>
+      </section>
+
+      <section class="app-section" id="canvas">
+        <h1>Shared Canvas</h1>
+        <p>Create something together.</p>
+      </section>
+
+      <section class="app-section" id="circles">
+        <h1>Secret Circles</h1>
+        <p>Your private communities.</p>
+      </section>
+
+      <section class="app-section" id="mood">
+        <h1>Mood Messages</h1>
+        <p>Let your mood shape your conversations.</p>
+      </section>
+
+      <section class="app-section" id="settings">
+        <h1>Settings</h1>
+        <p>Manage your profile and account.</p>
+      </section>
+
+    </main>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="app.js"></script>
+</body>
+</html>
