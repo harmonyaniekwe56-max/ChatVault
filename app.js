@@ -107,3 +107,38 @@ document.getElementById("logoutButton").addEventListener(
 
 loadApp();
 
+
+const friendSearch = document.getElementById("friendSearch");
+const findFriendsButton = document.getElementById("findFriendsButton");
+
+if (friendSearch) {
+  friendSearch.addEventListener("input", () => {
+    const searchTerm = friendSearch.value.trim().toLowerCase();
+
+    document.querySelectorAll(".friend-card").forEach((card) => {
+      const searchableText = card.textContent.toLowerCase();
+
+      card.style.display = searchableText.includes(searchTerm)
+        ? "flex"
+        : "none";
+    });
+  });
+}
+
+if (findFriendsButton) {
+  findFriendsButton.addEventListener("click", () => {
+    document.getElementById("discover").classList.add("active");
+
+    document.querySelectorAll(".app-section").forEach((section) => {
+      if (section.id !== "discover") {
+        section.classList.remove("active");
+      }
+    });
+
+    document.querySelectorAll(".nav-item").forEach((item) => {
+      item.classList.toggle("active", item.dataset.tab === "discover");
+    });
+
+    document.getElementById("pageTitle").textContent = "Discover";
+  });
+}
