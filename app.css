@@ -366,3 +366,35 @@
     padding: 17px;
   }
 }
+/* FRIEND AVATARS AND ACTIONS */
+
+.friend-avatar {
+  width: 46px;
+  height: 46px;
+  min-width: 46px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #8054d9, #d17be8);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.friend-card {
+  margin-bottom: 12px;
+}
+
+.friend-card button {
+  border: none;
+  padding: 9px 13px;
+  border-radius: 9px;
+  cursor: pointer;
+  font-size: 12px;
+}
+
+.friend-card button:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+}
