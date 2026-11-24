@@ -215,15 +215,16 @@ if (peopleSearchInput && peopleSearchResults) {
           return;
         }
 
-        button.textContent = "Request Sent";
+               button.textContent = "Request Sent";
       });
 
       info.append(name, username);
       card.append(info, button);
       peopleSearchResults.appendChild(card);
-        });
-      });
+    });
+  });
 }
+
 async function loadFriendRequests() {
   const requestContainer = document.getElementById("friendRequests");
   const requestCount = document.getElementById("requestCount");
