@@ -402,7 +402,7 @@ async function openPrivateChat(friend) {
 
   await loadChatMessages();
 }
-
+subscribeToChatMessages();
 async function loadChatMessages() {
   if (!currentChatFriend) return;
 
@@ -477,3 +477,59 @@ document.getElementById("backToFriends")
     document.getElementById("chatEmpty").hidden = false;
     currentChatFriend = null;
   });
+// LIVE CHAT UPDATES
+
+let chatSubscription = null;
+
+function subscribeToChatMessages() {
+  if (chatSubscription) {
+    supabaseClient.removeChannel(chatSubscription);
+    chatSubscription = null;
+  }
+
+  if (!currentChatFriend) return;
+
+  const friendId = currentChatFriend.friend_id;
+
+  chatSubscription = supabaseClient
+    .channel("chat-" + currentChatUserId + "-" + friendId)
+    .on(
+      "postgres_changes",
+      {
+        event: "INSERT",
+        schema: "public",
+        table: "messages",
+        filter: `receiver_id=eq.${currentChatUserId}`
+      },
+      async (payload) => {
+        const message = payload.new;
+
+        if (
+          message.sender_id === friendId &&
+          message.receiver_id === currentChatUserId
+        ) {
+          await loadChatMessages();
+        }
+      }
+    )
+    .on(
+      "postgres_changes",
+      {
+        event: "INSERT",
+        schema: "public",
+        table: "messages",
+        filter: `receiver_id=eq.${friendId}`
+      },
+      async (payload) => {
+        const message = payload.new;
+
+        if (
+          message.sender_id === currentChatUserId &&
+          message.receiver_id === friendId
+        ) {
+          await loadChatMessages();
+        }
+      }
+    )
+    .subscribe();
+}
