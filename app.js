@@ -317,3 +317,59 @@ async function loadFriendRequests() {
 }
 
 loadFriendRequests();
+// LOAD MY FRIENDS
+
+async function loadFriendsList() {
+  const friendsContainer = document.getElementById("friendsList");
+  const friendsCount = document.getElementById("friendsCount");
+
+  if (!friendsContainer) return;
+
+  const { data, error } = await supabaseClient.rpc("get_my_friends");
+
+  if (error) {
+    console.error("Friends error:", error.message);
+    friendsContainer.textContent = "Could not load your friends.";
+    return;
+  }
+
+  friendsCount.textContent = data.length;
+  friendsContainer.replaceChildren();
+
+  if (data.length === 0) {
+    friendsContainer.textContent =
+      "Your friends will appear here when you accept requests.";
+    return;
+  }
+
+  data.forEach((friend) => {
+    const card = document.createElement("div");
+    card.className = "friend-card friend-open-chat";
+
+    const avatar = document.createElement("div");
+    avatar.className = "friend-avatar";
+    avatar.textContent = (
+      friend.display_name || friend.username
+    ).charAt(0).toUpperCase();
+
+    const info = document.createElement("div");
+    info.className = "friend-card-info";
+
+    const name = document.createElement("strong");
+    name.textContent = friend.display_name || friend.username;
+
+    const username = document.createElement("small");
+    username.textContent = "@" + friend.username;
+
+    info.append(name, username);
+    card.append(avatar, info);
+
+    card.addEventListener("click", () => {
+      openPrivateChat(friend);
+    });
+
+    friendsContainer.appendChild(card);
+  });
+}
+
+loadFriendsList();
