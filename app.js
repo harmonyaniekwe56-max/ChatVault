@@ -470,11 +470,16 @@ document.getElementById("messageForm")
   });
 
 // BACK TO FRIENDS
-
 document.getElementById("backToFriends")
   .addEventListener("click", () => {
     document.getElementById("privateChat").hidden = true;
     document.getElementById("chatEmpty").hidden = false;
+
+    if (chatSubscription) {
+      supabaseClient.removeChannel(chatSubscription);
+      chatSubscription = null;
+    }
+
     currentChatFriend = null;
   });
 // LIVE CHAT UPDATES
