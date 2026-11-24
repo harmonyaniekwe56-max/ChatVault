@@ -170,8 +170,7 @@ if (peopleSearchInput && peopleSearchResults) {
     if (currentSearch !== searchNumber) return;
 
     if (error) {
-      peopleSearchResults.textContent =
-        "Could not search users. Please try again.";
+      peopleSearchResults.textContent = "Could not search users.";
       console.error(error);
       return;
     }
@@ -204,10 +203,10 @@ if (peopleSearchInput && peopleSearchResults) {
         button.disabled = true;
         button.textContent = "Sending...";
 
-        const { error: requestError } =
-          await supabaseClient.rpc("send_friend_request", {
-            target_user_id: person.id
-          });
+        const { error: requestError } = await supabaseClient.rpc(
+          "send_friend_request",
+          { target_user_id: person.id }
+        );
 
         if (requestError) {
           button.disabled = false;
@@ -224,7 +223,6 @@ if (peopleSearchInput && peopleSearchResults) {
       peopleSearchResults.appendChild(card);
     });
   });
-   });
 }
 async function loadFriendRequests() {
   const requestContainer = document.getElementById("friendRequests");
