@@ -139,11 +139,62 @@
 
 </section>
 
-      <section class="app-section" id="messages">
-        <h1>Messages</h1>
-        <p>Your private conversations.</p>
-      </section>
+<section class="app-section" id="messages">
 
+  <div class="chat-layout">
+
+    <div class="chat-heading">
+      <div>
+        <p class="section-eyebrow">YOUR PRIVATE SPACE</p>
+        <h1>Messages 💬</h1>
+        <p>Your conversations, all in one place.</p>
+      </div>
+    </div>
+
+    <div class="chat-empty" id="chatEmpty">
+      <div class="chat-empty-icon">💜</div>
+      <h2>Your conversations start here</h2>
+      <p>Choose a friend from your Friends list to begin chatting.</p>
+    </div>
+
+    <div class="private-chat" id="privateChat" hidden>
+
+      <div class="private-chat-header">
+        <button id="backToFriends">←</button>
+
+        <div class="chat-person-avatar" id="chatPersonAvatar">?</div>
+
+        <div class="chat-person-info">
+          <strong id="chatPersonName">Friend</strong>
+          <small id="chatPersonUsername">@username</small>
+        </div>
+
+        <div class="chat-call-actions">
+          <button title="Voice call" id="voiceCallButton">📞</button>
+          <button title="Video call" id="videoCallButton">📹</button>
+        </div>
+      </div>
+
+      <div class="chat-messages" id="chatMessages">
+        <p>Your private conversation will appear here.</p>
+      </div>
+
+      <form class="chat-input-area" id="messageForm">
+        <input
+          type="text"
+          id="messageInput"
+          placeholder="Write a message..."
+          maxlength="5000"
+          required
+        >
+        <button type="submit">Send</button>
+      </form>
+
+    </div>
+
+  </div>
+
+</section>
       <section class="app-section" id="stories">
         <h1>Stories</h1>
         <p>See moments shared by your friends.</p>
