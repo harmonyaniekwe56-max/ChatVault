@@ -373,3 +373,107 @@ async function loadFriendsList() {
 }
 
 loadFriendsList();
+// PRIVATE CHAT SYSTEM
+
+let currentChatFriend = null;
+let currentChatUserId = null;
+
+async function openPrivateChat(friend) {
+  const { data: { session } } =
+    await supabaseClient.auth.getSession();
+
+  if (!session) return;
+
+  currentChatUserId = session.user.id;
+  currentChatFriend = friend;
+
+  document.getElementById("chatEmpty").hidden = true;
+  document.getElementById("privateChat").hidden = false;
+
+  document.getElementById("chatPersonName").textContent =
+    friend.display_name || friend.username;
+
+  document.getElementById("chatPersonUsername").textContent =
+    "@" + friend.username;
+
+  document.getElementById("chatPersonAvatar").textContent =
+    (friend.display_name || friend.username)
+      .charAt(0).toUpperCase();
+
+  await loadChatMessages();
+}
+
+async function loadChatMessages() {
+  if (!currentChatFriend) return;
+
+  const chatMessages = document.getElementById("chatMessages");
+  const friendId = currentChatFriend.friend_id;
+
+  const { data, error } = await supabaseClient
+    .from("messages")
+    .select("*")
+    .or(
+      `and(sender_id.eq.${currentChatUserId},receiver_id.eq.${friendId}),and(sender_id.eq.${friendId},receiver_id.eq.${currentChatUserId})`
+    )
+    .order("created_at", { ascending: true });
+
+  if (error) {
+    console.error(error);
+    chatMessages.textContent = "Could not load messages.";
+    return;
+  }
+
+  chatMessages.replaceChildren();
+
+  data.forEach((message) => {
+    const bubble = document.createElement("div");
+    bubble.textContent = message.content;
+    bubble.className =
+      message.sender_id === currentChatUserId
+        ? "message-bubble sent"
+        : "message-bubble received";
+
+    chatMessages.appendChild(bubble);
+  });
+
+  chatMessages.scrollTop = chatMessages.scrollHeight;
+}
+
+// SEND MESSAGE
+
+document.getElementById("messageForm")
+  .addEventListener("submit", async (event) => {
+    event.preventDefault();
+
+    if (!currentChatFriend) return;
+
+    const input = document.getElementById("messageInput");
+    const content = input.value.trim();
+
+    if (!content) return;
+
+    const { error } = await supabaseClient
+      .from("messages")
+      .insert({
+        sender_id: currentChatUserId,
+        receiver_id: currentChatFriend.friend_id,
+        content
+      });
+
+    if (error) {
+      alert(error.message);
+      return;
+    }
+
+    input.value = "";
+    await loadChatMessages();
+  });
+
+// BACK TO FRIENDS
+
+document.getElementById("backToFriends")
+  .addEventListener("click", () => {
+    document.getElementById("privateChat").hidden = true;
+    document.getElementById("chatEmpty").hidden = false;
+    currentChatFriend = null;
+  });
