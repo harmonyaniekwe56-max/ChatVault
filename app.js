@@ -222,6 +222,7 @@ if (peopleSearchInput && peopleSearchResults) {
       card.append(info, button);
       peopleSearchResults.appendChild(card);
         });
+      });
 }
 async function loadFriendRequests() {
   const requestContainer = document.getElementById("friendRequests");
