@@ -314,6 +314,7 @@ async function loadFriendRequests() {
 }
 
 loadFriendRequests();
+
 // LOAD MY FRIENDS
 
 async function loadFriendsList() {
@@ -323,6 +324,49 @@ async function loadFriendsList() {
   if (!friendsContainer) return;
 
   const { data, error } = await supabaseClient.rpc("get_my_friends");
+
+async function loadOutgoingFriendRequests() {
+  const container = document.getElementById("outgoingFriendRequests");
+  if (!container) return;
+
+  const { data, error } = await supabaseClient.rpc(
+    "get_outgoing_friend_requests"
+  );
+
+  if (error) {
+    container.textContent = "Could not load sent requests.";
+    console.error(error);
+    return;
+  }
+
+  container.replaceChildren();
+
+  if (!data || data.length === 0) {
+    container.textContent = "No pending sent requests.";
+    return;
+  }
+
+  data.forEach((person) => {
+    const card = document.createElement("div");
+    card.className = "friend-card";
+
+    const info = document.createElement("div");
+    info.className = "friend-info";
+
+    const name = document.createElement("strong");
+    name.textContent = person.display_name || person.username;
+
+    const username = document.createElement("p");
+    username.textContent = "@" + person.username;
+
+    const status = document.createElement("span");
+    status.textContent = "Request pending";
+
+    info.append(name, username, status);
+    card.appendChild(info);
+    container.appendChild(card);
+  });
+}
 
   if (error) {
     console.error("Friends error:", error.message);
