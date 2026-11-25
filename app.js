@@ -213,6 +213,7 @@ data.forEach((person) => {
     }
 
     button.textContent = "Request Sent";
+    loadOutgoingFriendRequests();
   });
 
   info.append(name, username);
