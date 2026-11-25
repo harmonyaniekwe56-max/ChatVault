@@ -485,19 +485,41 @@ document.getElementById("messageForm")
     input.value = "";
     await loadChatMessages();
   });
-
 // BACK TO FRIENDS
 document.getElementById("backToFriends")
   .addEventListener("click", () => {
+
     document.getElementById("privateChat").hidden = true;
     document.getElementById("chatEmpty").hidden = false;
 
+    // Return to Friends section
+    document.querySelectorAll(".app-section").forEach(section => {
+      section.classList.remove("active");
+    });
+
+    document.getElementById("friends").classList.add("active");
+
+    // Update sidebar navigation
+    document.querySelectorAll(".nav-item").forEach(item => {
+      item.classList.remove("active");
+    });
+
+    const friendsNav = document.querySelector('[data-section="friends"]');
+
+    if (friendsNav) {
+      friendsNav.classList.add("active");
+    }
+
+    document.getElementById("pageTitle").textContent = "Friends";
+
+    // Stop listening to the previous chat
     if (chatSubscription) {
       supabaseClient.removeChannel(chatSubscription);
       chatSubscription = null;
     }
 
     currentChatFriend = null;
+    currentChatUserId = null;
   });
 // LIVE CHAT UPDATES
 
