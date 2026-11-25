@@ -364,8 +364,31 @@ async function loadOutgoingFriendRequests() {
     status.textContent = "Request pending";
 
     info.append(name, username, status);
-    card.appendChild(info);
-    container.appendChild(card);
+
+const cancelButton = document.createElement("button");
+cancelButton.textContent = "Cancel Request";
+cancelButton.className = "secondary-button";
+
+cancelButton.addEventListener("click", async () => {
+  cancelButton.disabled = true;
+
+  const { data, error } = await supabaseClient.rpc(
+    "cancel_friend_request",
+    { request_id: person.request_id }
+  );
+
+  if (error || !data) {
+    cancelButton.disabled = false;
+    alert("Could not cancel this request.");
+    console.error(error);
+    return;
+  }
+
+  await loadOutgoingFriendRequests();
+});
+
+card.append(info, cancelButton);
+container.appendChild(card);
   });
 }
 
