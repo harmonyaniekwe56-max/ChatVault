@@ -66,8 +66,9 @@ signupForm.addEventListener("submit", async (event) => {
     email,
     password,
     options: {
-      data: { username }
-    }
+  data: { username },
+  emailRedirectTo: "https://harmonyaniekwe56-max.github.io/ChatVault/"
+}
   });
 console.log("SIGNUP RESULT:", { data, error });
   if (error) {
