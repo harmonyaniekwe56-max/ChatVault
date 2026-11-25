@@ -438,6 +438,69 @@ container.appendChild(card);
 }
 
 loadFriendsList();
+async function loadSuggestedFriends() {
+  const container = document.getElementById("suggestedFriends");
+  if (!container) return;
+
+  const { data, error } = await supabaseClient.rpc(
+    "get_suggested_users"
+  );
+
+  if (error) {
+    container.textContent = "Could not load suggested friends.";
+    console.error(error);
+    return;
+  }
+
+  container.replaceChildren();
+
+  if (!data || data.length === 0) {
+    container.textContent = "No suggestions available yet.";
+    return;
+  }
+
+  data.forEach((person) => {
+    const card = document.createElement("div");
+    card.className = "friend-card";
+
+    const info = document.createElement("div");
+    info.className = "friend-info";
+
+    const name = document.createElement("strong");
+    name.textContent = person.display_name || person.username;
+
+    const username = document.createElement("p");
+    username.textContent = "@" + person.username;
+
+    const addButton = document.createElement("button");
+    addButton.textContent = "Add Friend";
+    addButton.className = "secondary-button";
+
+    addButton.addEventListener("click", async () => {
+      addButton.disabled = true;
+
+      const { error } = await supabaseClient.rpc(
+        "send_friend_request",
+        { target_user_id: person.id }
+      );
+
+      if (error) {
+        addButton.disabled = false;
+        alert(error.message);
+        console.error(error);
+        return;
+      }
+
+      addButton.textContent = "Request Sent";
+      await loadSuggestedFriends();
+      await loadOutgoingFriendRequests();
+    });
+
+    info.append(name, username);
+    card.append(info, addButton);
+    container.appendChild(card);
+  });
+}
 // PRIVATE CHAT SYSTEM
 
 let currentChatFriend = null;
