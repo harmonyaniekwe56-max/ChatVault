@@ -69,7 +69,7 @@ signupForm.addEventListener("submit", async (event) => {
       data: { username }
     }
   });
-
+console.log("SIGNUP RESULT:", { data, error });
   if (error) {
     message.textContent = error.message;
     return;
@@ -80,7 +80,6 @@ signupForm.addEventListener("submit", async (event) => {
     : "Account created! Check your email to confirm your account.";
 });
  
-console.log("SIGNUP RESULT:", { data, error });
  // Real login
 loginForm.addEventListener("submit", async (event) => {
   event.preventDefault();
