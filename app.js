@@ -414,9 +414,9 @@ document.getElementById("pageTitle").textContent = "Messages";
     (friend.display_name || friend.username)
       .charAt(0).toUpperCase();
 
-  await loadChatMessages();
-}
+await loadChatMessages();
 subscribeToChatMessages();
+}
 
 async function loadChatMessages() {
   if (!currentChatFriend) return;
