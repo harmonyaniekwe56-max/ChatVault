@@ -393,7 +393,7 @@ document.querySelectorAll(".nav-item").forEach(item => {
   item.classList.remove("active");
 });
 
-const messagesNav = document.querySelector('[data-section="messages"]');
+const messagesNav = document.querySelector('[data-tab="messages"]');
 
 if (messagesNav) {
   messagesNav.classList.add("active");
