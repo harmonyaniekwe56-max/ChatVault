@@ -316,6 +316,7 @@ async function loadFriendRequests() {
 // LOAD FRIEND REQUESTS
 // (We'll call the functions after all declarations.)
 
+// LOAD MY FRIENDS
 async function loadFriendsList() {
   const friendsContainer = document.getElementById("friendsList");
   const friendsCount = document.getElementById("friendsCount");
@@ -324,6 +325,57 @@ async function loadFriendsList() {
 
   const { data, error } = await supabaseClient.rpc("get_my_friends");
 
+  if (error) {
+    console.error("Friends error:", error.message);
+    friendsContainer.textContent = "Could not load your friends.";
+    return;
+  }
+
+  if (friendsCount) {
+    friendsCount.textContent = data.length;
+  }
+
+  friendsContainer.replaceChildren();
+
+  if (data.length === 0) {
+    friendsContainer.textContent =
+      "Your friends will appear here when you accept requests.";
+    return;
+  }
+
+  data.forEach((friend) => {
+    const card = document.createElement("div");
+    card.className = "friend-card friend-open-chat";
+
+    const avatar = document.createElement("div");
+    avatar.className = "friend-avatar";
+    avatar.textContent = (
+      friend.display_name || friend.username
+    ).charAt(0).toUpperCase();
+
+    const info = document.createElement("div");
+    info.className = "friend-card-info";
+
+    const name = document.createElement("strong");
+    name.textContent = friend.display_name || friend.username;
+
+    const username = document.createElement("small");
+    username.textContent = "@" + friend.username;
+
+    info.append(name, username);
+    card.append(avatar, info);
+
+    card.addEventListener("click", () => {
+      openPrivateChat(friend);
+    });
+
+    friendsContainer.appendChild(card);
+  });
+}
+
+loadFriendsList();
+
+  // LOAD OUTGOING FRIEND REQUESTS
 async function loadOutgoingFriendRequests() {
   const container = document.getElementById("outgoingFriendRequests");
   if (!container) return;
@@ -363,32 +415,42 @@ async function loadOutgoingFriendRequests() {
 
     info.append(name, username, status);
 
-const cancelButton = document.createElement("button");
-cancelButton.textContent = "Cancel Request";
-cancelButton.className = "secondary-button";
+    const cancelButton = document.createElement("button");
+    cancelButton.textContent = "Cancel Request";
+    cancelButton.className = "secondary-button";
 
-cancelButton.addEventListener("click", async () => {
-  cancelButton.disabled = true;
+    cancelButton.addEventListener("click", async () => {
+      cancelButton.disabled = true;
 
-  const { data, error } = await supabaseClient.rpc(
-    "cancel_friend_request",
-    { request_id: person.request_id }
-  );
+      const { data, error } = await supabaseClient.rpc(
+        "cancel_friend_request",
+        { request_id: person.request_id }
+      );
 
-  if (error || !data) {
-    cancelButton.disabled = false;
-    alert("Could not cancel this request.");
-    console.error(error);
-    return;
-  }
+      if (error || !data) {
+        cancelButton.disabled = false;
+        alert("Could not cancel this request.");
+        console.error(error);
+        return;
+      }
 
-  await loadOutgoingFriendRequests();
-});
+      await loadOutgoingFriendRequests();
+    });
 
-card.append(info, cancelButton);
-container.appendChild(card);
+    card.append(info, cancelButton);
+    container.appendChild(card);
   });
 }
+
+
+// LOAD MY FRIENDS
+async function loadFriendsList() {
+  const friendsContainer = document.getElementById("friendsList");
+  const friendsCount = document.getElementById("friendsCount");
+
+  if (!friendsContainer) return;
+
+  const { data, error } = await supabaseClient.rpc("get_my_friends");
 
   if (error) {
     console.error("Friends error:", error.message);
@@ -435,6 +497,9 @@ container.appendChild(card);
   });
 }
 
+
+// LOAD FRIENDS SECTIONS
+loadOutgoingFriendRequests();
 loadFriendsList();
 async function loadSuggestedFriends() {
   const container = document.getElementById("suggestedFriends");
