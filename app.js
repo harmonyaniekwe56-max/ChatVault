@@ -314,7 +314,7 @@ async function loadFriendRequests() {
 }
 
 loadFriendRequests();
-
+loadOutgoingFriendRequests();
 // LOAD MY FRIENDS
 
 async function loadFriendsList() {
