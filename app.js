@@ -170,46 +170,55 @@ if (peopleSearchInput && peopleSearchResults) {
       return;
     }
 
-    data.forEach((person) => {
-      const card = document.createElement("div");
-      card.className = "friend-card";
+data.forEach((person) => {
+  const card = document.createElement("div");
+  card.className = "friend-card";
 
-      const info = document.createElement("div");
-      info.className = "friend-card-info";
+  // Profile avatar
+  const avatar = document.createElement("div");
+  avatar.className = "friend-avatar";
+  avatar.textContent = (
+    person.display_name || person.username
+  ).charAt(0).toUpperCase();
 
-      const name = document.createElement("strong");
-      name.textContent = person.display_name || person.username;
+  // Profile information
+  const info = document.createElement("div");
+  info.className = "friend-card-info";
 
-      const username = document.createElement("small");
-      username.textContent = "@" + person.username;
+  const name = document.createElement("strong");
+  name.textContent = person.display_name || person.username;
 
-      const button = document.createElement("button");
-      button.className = "primary-button";
+  const username = document.createElement("small");
+  username.textContent = "@" + person.username;
+
+  // Add friend button
+  const button = document.createElement("button");
+  button.className = "primary-button";
+  button.textContent = "Add Friend";
+
+  button.addEventListener("click", async () => {
+    button.disabled = true;
+    button.textContent = "Sending...";
+
+    const { error: requestError } = await supabaseClient.rpc(
+      "send_friend_request",
+      { target_user_id: person.id }
+    );
+
+    if (requestError) {
+      button.disabled = false;
       button.textContent = "Add Friend";
+      alert(requestError.message);
+      return;
+    }
 
-      button.addEventListener("click", async () => {
-        button.disabled = true;
-        button.textContent = "Sending...";
+    button.textContent = "Request Sent";
+  });
 
-        const { error: requestError } = await supabaseClient.rpc(
-          "send_friend_request",
-          { target_user_id: person.id }
-        );
-
-        if (requestError) {
-          button.disabled = false;
-          button.textContent = "Add Friend";
-          alert(requestError.message);
-          return;
-        }
-
-               button.textContent = "Request Sent";
-      });
-
-      info.append(name, username);
-      card.append(info, button);
-      peopleSearchResults.appendChild(card);
-    });
+  info.append(name, username);
+  card.append(avatar, info, button);
+  peopleSearchResults.appendChild(card);
+});
   });
 }
 
