@@ -564,6 +564,7 @@ async function loadSuggestedFriends() {
     container.appendChild(card);
   });
 }
+loadSuggestedFriends();
 // PRIVATE CHAT SYSTEM
 
 let currentChatFriend = null;
