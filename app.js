@@ -420,6 +420,7 @@ document.getElementById("pageTitle").textContent = "Messages";
   await loadChatMessages();
 }
 subscribeToChatMessages();
+
 async function loadChatMessages() {
   if (!currentChatFriend) return;
 
@@ -444,12 +445,25 @@ async function loadChatMessages() {
 
   data.forEach((message) => {
     const bubble = document.createElement("div");
-    bubble.textContent = message.content;
+
     bubble.className =
       message.sender_id === currentChatUserId
         ? "message-bubble sent"
         : "message-bubble received";
 
+    const content = document.createElement("div");
+    content.textContent = message.content;
+
+    const timestamp = document.createElement("small");
+    timestamp.className = "message-time";
+
+    timestamp.textContent = new Date(message.created_at)
+      .toLocaleTimeString([], {
+        hour: "2-digit",
+        minute: "2-digit"
+      });
+
+    bubble.append(content, timestamp);
     chatMessages.appendChild(bubble);
   });
 
