@@ -4,7 +4,7 @@ const supabaseClient = window.supabase.createClient(
   SUPABASE_URL,
   SUPABASE_KEY
 );
-const themeToggle = document.getElementById("themeToggle");
+const themeToggle = document.getElementById("themeToggle"); 
 const signupTab = document.getElementById("signupTab");
 const loginTab = document.getElementById("loginTab");
 const signupForm = document.getElementById("signupForm");
