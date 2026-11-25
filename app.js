@@ -385,7 +385,24 @@ async function openPrivateChat(friend) {
   if (!session) return;
 
   currentChatUserId = session.user.id;
-  currentChatFriend = friend;
+currentChatFriend = friend;// Open the Messages section
+document.querySelectorAll(".app-section").forEach(section => {
+  section.classList.remove("active");
+});
+
+document.getElementById("messages").classList.add("active");
+
+document.querySelectorAll(".nav-item").forEach(item => {
+  item.classList.remove("active");
+});
+
+const messagesNav = document.querySelector('[data-section="messages"]');
+
+if (messagesNav) {
+  messagesNav.classList.add("active");
+}
+
+document.getElementById("pageTitle").textContent = "Messages";
 
   document.getElementById("chatEmpty").hidden = true;
   document.getElementById("privateChat").hidden = false;
