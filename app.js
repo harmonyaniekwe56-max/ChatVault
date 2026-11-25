@@ -313,12 +313,8 @@ async function loadFriendRequests() {
     requestContainer.appendChild(card);
   });
 }
-
-loadFriendRequests();
-loadOutgoingFriendRequests();
-loadSuggestedFriends();
-loadFriendsList();
-// LOAD MY FRIENDS
+// LOAD FRIEND REQUESTS
+// (We'll call the functions after all declarations.)
 
 async function loadFriendsList() {
   const friendsContainer = document.getElementById("friendsList");
