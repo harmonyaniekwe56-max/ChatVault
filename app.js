@@ -515,7 +515,7 @@ document.getElementById("backToFriends")
       item.classList.remove("active");
     });
 
-    const friendsNav = document.querySelector('[data-section="friends"]');
+    const friendsNav = document.querySelector('[data-tab="friends"]');
 
     if (friendsNav) {
       friendsNav.classList.add("active");
