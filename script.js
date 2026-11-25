@@ -80,7 +80,7 @@ signupForm.addEventListener("submit", async (event) => {
     : "Account created! Check your email to confirm your account.";
 });
 
-
+console.log("SIGNUP RESULT:", { data, error });
  // Real login
 loginForm.addEventListener("submit", async (event) => {
   event.preventDefault();
